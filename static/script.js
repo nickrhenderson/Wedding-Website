@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
         sections.forEach(section => {
             const sectionTop = section.offsetTop;
             const sectionHeight = section.clientHeight;
-            if (window.scrollY >= sectionTop - 60 && window.scrollY < sectionTop + sectionHeight - 60) {  // Adjust the value as needed
+            if (window.scrollY >= sectionTop - 60 && window.scrollY < sectionTop + sectionHeight - 60) {
                 currentSection = section.getAttribute('id');
             }
         });
@@ -72,16 +72,18 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Check which link the underline is currently under
+        // Check if the underline is under the "Photos" link
         const photosLink = document.querySelector('a[href="#intro"]'); // 'PHOTOS' link
         const photosLinkRect = photosLink ? photosLink.getBoundingClientRect() : null;
 
         if (photosLinkRect) {
             const underlineRect = underline.getBoundingClientRect();
             if (underlineRect.left >= photosLinkRect.left && underlineRect.right <= photosLinkRect.right) {
+                // Underline is under 'Photos'
                 topBar.classList.remove('black-background');
                 topBar.classList.add('default-background');
             } else {
+                // Underline is not under 'Photos'
                 topBar.classList.remove('default-background');
                 topBar.classList.add('black-background');
             }
@@ -292,7 +294,7 @@ document.addEventListener('DOMContentLoaded', function() {
 document.addEventListener('DOMContentLoaded', function() {
     const registriesSection = document.getElementById('registries');
     const registriesImages = registriesSection.querySelectorAll('.image-class'); // Replace '.image-class' with the actual class for your images
-    const scrollThreshold = registriesSection.offsetTop + 100; // Adjust this value as needed
+    const scrollThreshold = registriesSection.offsetTop + 0; // Adjust this value as needed
 
     function handleScroll() {
         if (window.scrollY + window.innerHeight > scrollThreshold) {
