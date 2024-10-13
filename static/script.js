@@ -153,12 +153,8 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // Javascript for RSVP
-const SB_TOKEN = process.env.SB_TOKEN;
-
-console.log('Token:', SB_TOKEN);
-
 const { createClient } = supabase;
-const _supabase = createClient('https://bdaxwicegvivvcspvclp.supabase.co', SB_TOKEN);
+const _supabase = createClient('https://bdaxwicegvivvcspvclp.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJkYXh3aWNlZ3ZpdnZjc3B2Y2xwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjg3Nzg3OTAsImV4cCI6MjA0NDM1NDc5MH0.oBuSneA0ooFIZmxMt028YAsQHI5BQZZKjz8LXn7_Dp0');
 
 document.addEventListener('DOMContentLoaded', async function() {
     let nameLibrary = [];
@@ -297,6 +293,19 @@ document.addEventListener('DOMContentLoaded', function () {
     const registriesSection = document.getElementById('registries');
     let lastScrollPosition = window.scrollY;  // Track the last scroll position
     let isAnimating = false;  // Track if the animation is currently applied
+
+    // Function to check if the registries section is in view
+    const checkIfInView = () => {
+        const rect = registriesSection.getBoundingClientRect();
+        // Check if the section is in the viewport
+        return rect.top < window.innerHeight && rect.bottom > 0;
+    };
+
+    // Initial check to see if the section is already in view on page load
+    if (checkIfInView()) {
+        registriesSection.classList.add('animate-images');
+        isAnimating = true;
+    }
 
     // Create an Intersection Observer
     const observer = new IntersectionObserver(entries => {
