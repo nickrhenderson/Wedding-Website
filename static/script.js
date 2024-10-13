@@ -289,46 +289,27 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // JavaScript for registries load-in
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function() {
     const registriesSection = document.getElementById('registries');
-    let lastScrollPosition = window.scrollY;  // Track the last scroll position
-    let isAnimating = false;  // Track if the animation is currently applied
+    const registriesImages = registriesSection.querySelectorAll('.image-class'); // Replace '.image-class' with the actual class for your images
+    const scrollThreshold = registriesSection.offsetTop + 100; // Adjust this value as needed
 
-    // Function to check if the registries section is in view
-    const checkIfInView = () => {
-        const rect = registriesSection.getBoundingClientRect();
-        // Check if the section is in the viewport
-        return rect.top < window.innerHeight && rect.bottom > 0;
-    };
-
-    // Initial check to see if the section is already in view on page load
-    if (checkIfInView()) {
-        registriesSection.classList.add('animate-images');
-        isAnimating = true;
+    function handleScroll() {
+        if (window.scrollY + window.innerHeight > scrollThreshold) {
+            registriesSection.classList.add('animate-images');
+            registriesImages.forEach(image => {
+                image.classList.add('animate-images'); // Add animation class to each image
+            });
+        } else {
+            registriesSection.classList.remove('animate-images');
+            registriesImages.forEach(image => {
+                image.classList.remove('animate-images'); // Remove animation class from each image
+            });
+        }
     }
 
-    // Create an Intersection Observer
-    const observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-            const currentScrollPosition = window.scrollY;  // Get the current scroll position
-
-            // Check if the section is intersecting and scrolling down
-            if (entry.isIntersecting && currentScrollPosition > lastScrollPosition && !isAnimating) {
-                registriesSection.classList.add('animate-images');
-                isAnimating = true;  // Set the flag to true to indicate animation is in progress
-            } else if (!entry.isIntersecting && currentScrollPosition < lastScrollPosition && isAnimating) {
-                // Reset animation if scrolling up and the section is not intersecting
-                registriesSection.classList.remove('animate-images');
-                isAnimating = false;  // Reset the flag
-            }
-
-            // Update the last scroll position for the next check
-            lastScrollPosition = currentScrollPosition;
-        });
-    }, { threshold: 0.1 });  // Adjust the threshold as needed
-
-    // Observe the registries section
-    observer.observe(registriesSection);
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Check on page load in case already scrolled
 });
 
 // JavaScript for triggering the typing effect on scroll
