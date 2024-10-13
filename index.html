@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>| Home</title>
+    <link rel="stylesheet" href="static\styles.css">
+    <link rel="icon" href="static\favicon.ico" type="image/x-icon">
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="static\script.js" defer></script>
+</head>
+<body>
+
+    <div class="top-bar">
+        <div class="nav-links">
+            <a href="#intro" class="scroll-link">PHOTOS</a>
+            <a href="#registries" class="scroll-link">REGISTRY</a>
+            <a href="#venue" class="scroll-link">VENUE</a>
+        </div>
+    </div>  
+
+    <div id="intro" class="section">
+        <div data-fadeshow="quick-nav prev-next-nav slide-counter autoplay ken-burns">
+
+            <!-- Radio -->
+            <input type="radio" name="css-fadeshow" id="fs-slide-1" />
+            <input type="radio" name="css-fadeshow" id="fs-slide-2" />
+            <input type="radio" name="css-fadeshow" id="fs-slide-3" />
+      
+            <!-- Slides -->
+            <div class="fs-slides">
+              <div class="fs-slide">
+                <div class="fs-slide-bg" style="background-image: url(static/images/Us1.gif);"></div>
+                <!-- You can add content to slides (class names are not bound to CSS Fadeshow) -->
+                <div class="slide-content">
+                    <h1>
+                        <span class="nick">Nick</span><span class="ampersand"> &</span><br>
+                        <span class="logan">Logan</span>
+                    </h1>
+                    <p>05 | 12 | 25</p>
+                    <p class="countdown"></p>
+                </div>                
+              </div>
+              <div class="fs-slide">
+                <div class="fs-slide-bg" style="background-image: url(static/images/Us2.gif);"></div>
+                <div class="slide-content">
+                    <h1>
+                        <span class="nick">Nick</span><span class="ampersand"> &</span><br>
+                        <span class="logan">Logan</span>
+                    </h1>
+                    <p>05 | 12 | 25</p>
+                    <p class="countdown"></p>
+                </div>     
+              </div>
+              <div class="fs-slide">
+                <div class="fs-slide-bg" style="background-image: url(static/images/Us3.gif);"></div>
+                <div class="slide-content">
+                    <h1>
+                        <span class="nick">Nick</span><span class="ampersand"> &</span><br>
+                        <span class="logan">Logan</span>
+                    </h1>
+                    <p>05 | 12 | 25</p>
+                    <p class="countdown"></p>
+                </div>     
+              </div>
+            </div>
+      
+            <!-- Quick Navigation -->
+            <div class="fs-quick-nav">
+              <label class="fs-quick-btn" for="fs-slide-1"></label>
+              <label class="fs-quick-btn" for="fs-slide-2"></label>
+              <label class="fs-quick-btn" for="fs-slide-3"></label>
+            </div>
+      
+            <!-- Prev Navigation -->
+            <div class="fs-prev-nav">
+              <label class="fs-prev-btn" for="fs-slide-1"></label>
+              <label class="fs-prev-btn" for="fs-slide-2"></label>
+              <label class="fs-prev-btn" for="fs-slide-3"></label>
+            </div>
+      
+            <!-- Next Navigation -->
+            <div class="fs-next-nav">
+                <label class="fs-next-btn" for="fs-slide-1"></label>
+                <label class="fs-next-btn" for="fs-slide-2"></label>
+                <label class="fs-next-btn" for="fs-slide-3"></label>
+            </div>
+
+          </div>
+    </div>
+
+    <div id="registries" class="section">
+        <a href="https://www.amazon.com/wedding/registry/269VEQMJKMYLZ">
+            <img src="static\images\Amazon.png" alt="Amazon Wedding Registry">
+        </a>        
+        <a href="https://www.target.com/gift-registry/gift/Henderson-wedding-registry0512">
+            <img src="static\images\Target.png" alt="Target Wedding Registry">
+        </a>
+    </div>     
+
+    <div id="rsvp" class="section">
+        <form class="rsvp-form">
+            <h1>RSVP</h1>
+            <div class="input-container">
+                <input type="text" id="name-input" placeholder="">
+                <span>Your Name</span>
+            </div>
+            <div id="result-container">
+                <div id="result-message"></div>
+                <button type="button" id="select-button" style="display: none;">Select</button>
+            </div>
+            <button type="button" id="search-button">Search</button>
+        </form>
+    </div>
+
+    <div id="new-form" class="section" style="display: none;">
+        <form class="rsvp-form" id="new-form-content">
+            <h1>RSVP</h1>
+            <div class="input-container">
+                <input type="text" id="phone-number" placeholder="" required maxlength="14">
+                <span>Phone Number</span>
+            </div>
+            <div class="input-container">
+                <select id="attendance" required>
+                    <option value="" disabled selected></option>
+                    <option value="attending">Attending</option>
+                    <option value="not-attending">Not Attending</option>
+                    <option value="maybe">Maybe</option>
+                </select>
+                <span>Attendance</span>
+            </div>
+            <div class="input-container">
+                <input type="checkbox" id="plus-one-checkbox">
+                <label for="plus-one-checkbox">Add +1</label>
+            </div>
+            <div id="plus-one-fields" style="display: none;">
+                <div class="input-container">
+                    <input type="text" id="plus-one-name" placeholder="">
+                    <span>Plus One's Name</span>
+                </div>
+            </div>
+            <button type="submit" id="submit">Submit</button>
+        </form>
+    </div>
+    
+    <div id="venue" class="section">
+        <h1>VENUE</h1>
+        <p>We are excited to announce that the wedding will take place at The Rustic Event Center. This charming venue is renowned for its beautiful outdoor spaces and elegant rustic charm. Our plan is to host the wedding outdoors, allowing us to take full advantage of the picturesque surroundings and create a memorable experience in a natural setting.
+
+            However, in the event of unfavorable weather conditions, we have arranged for an indoor option to ensure that the celebration proceeds comfortably and smoothly. The indoor space also reflects the rustic elegance of the venue, providing a cozy and intimate atmosphere.
+            
+            As we continue to finalize the details, we will provide additional information regarding the schedule, dress code, and other important aspects of the wedding. We look forward to sharing more updates with you soon and are excited to celebrate this special day with you!</p>
+
+        <!-- Map Container -->    
+        <div id="map" style="height: 450px; width: 95%; margin: 0 auto; z-index: 1; margin-top: 0.5%; border-radius: 0% 10% 0% 10%;"></div>
+        <p>2060 Woodburn Hay Rd, Hopkinsville, KY 42240</p>
+    </div>
+    
+    <footer>
+        <svg viewBox="0 0 120 28">
+         <defs> 
+           <mask id="xxx">
+             <circle cx="7" cy="12" r="40" fill="#fff" />
+           </mask>
+           
+           <filter id="goo">
+              <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur" />
+              <feColorMatrix in="blur" mode="matrix" values="
+                   1 0 0 0 0  
+                   0 1 0 0 0  
+                   0 0 1 0 0  
+                   0 0 0 13 -9" result="goo" />
+              <feBlend in="SourceGraphic" in2="goo" />
+              </filter>
+              <path id="wave" d="M 0,10 C 30,10 30,15 60,15 90,15 90,10 120,10 150,10 150,15 180,15 210,15 210,10 240,10 v 28 h -240 z"/>
+          </defs> 
+
+            <use id="wave3" class="wave" xlink:href="#wave" x="0" y="-2" ></use>
+            <use id="wave2" class="wave" xlink:href="#wave" x="0" y="0" ></use>
+            
+          <g class="gooeff">
+            <use id="wave1" class="wave" xlink:href="#wave" x="0" y="1" />
+        
+        </svg>
+        
+          <div>Made with ❤️ by Nick Henderson</div>
+    </footer>
+
+    <div class="background"></div> <!-- Gradient background div -->
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    
+    <!-- Leaflet JavaScript -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    
+    <script>
+        var map = L.map('map').setView([36.9464533, -87.457026], 13); // Replace with your coordinates and zoom level
+    
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+    
+        L.marker([36.9464533, -87.457026]).addTo(map) // Replace with your coordinates
+            .bindPopup('The Rustic Event Center')
+            .openPopup();
+    </script>
+</body>
+</html>
