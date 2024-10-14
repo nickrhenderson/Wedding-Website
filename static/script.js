@@ -77,6 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const photosLinkRect = photosLink ? photosLink.getBoundingClientRect() : null;
 
         if (photosLinkRect) {
+            console.log("True")
             const underlineRect = underline.getBoundingClientRect();
             if (underlineRect.left >= photosLinkRect.left && underlineRect.right <= photosLinkRect.right) {
                 // Underline is under 'Photos'

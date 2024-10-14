@@ -412,6 +412,7 @@ body {
 
 #venue {
     padding-top: 1rem;
+    margin-bottom: 20rem;
     font-size: clamp(0px, 4vw, 20px);
     transform: scale(0.9);
 
