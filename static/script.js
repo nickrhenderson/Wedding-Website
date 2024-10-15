@@ -317,7 +317,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // JavaScript for info dropdown
 document.addEventListener("DOMContentLoaded", function() {
-    // Select all questions
+
     const questions = document.querySelectorAll('.faq li .question');
 
     questions.forEach(function(question) {
