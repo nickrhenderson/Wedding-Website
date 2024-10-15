@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // Check if the underline is under the "Photos" link
-        const photosLink = document.querySelector('a[href="#intro"]'); // 'PHOTOS' link
+        const photosLink = document.querySelector('a[href="#photo"]'); // 'PHOTOS' link
         const photosLinkRect = photosLink ? photosLink.getBoundingClientRect() : null;
 
         if (photosLinkRect) {
@@ -315,20 +315,26 @@ document.addEventListener('DOMContentLoaded', function() {
     handleScroll(); // Check on page load in case already scrolled
 });
 
-// JavaScript for triggering the typing effect on scroll
-document.addEventListener('DOMContentLoaded', function() {
-    const venueSection = document.getElementById('venue');
-    const venueTitle = venueSection.querySelector('h1');
-    
-    // Create an Intersection Observer to detect when the venue section comes into view
-    const observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                venueTitle.classList.add('typed-text');
-                observer.unobserve(venueTitle); // Stop observing after the animation triggers
+// JavaScript for info dropdown
+document.addEventListener("DOMContentLoaded", function() {
+    // Select all questions
+    const questions = document.querySelectorAll('.faq li .question');
+
+    questions.forEach(function(question) {
+        question.addEventListener('click', function() {
+            const plusMinusToggle = this.querySelector('.plus-minus-toggle');
+            const answer = this.nextElementSibling; // Get the corresponding answer
+
+            // Toggle the collapsed class
+            plusMinusToggle.classList.toggle('collapsed');
+            this.parentElement.classList.toggle('active');
+
+            // Toggle the answer visibility
+            if (answer.style.maxHeight) {
+                answer.style.maxHeight = null; // Collapse
+            } else {
+                answer.style.maxHeight = answer.scrollHeight + 'px'; // Expand
             }
         });
-    }, { threshold: 0.1 }); // Adjust threshold as needed
-
-    observer.observe(venueTitle); // Start observing the title
+    });
 });
