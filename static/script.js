@@ -181,17 +181,25 @@ document.addEventListener('DOMContentLoaded', async function() {
         const inputValue = document.getElementById('name-input').value.trim();
         const resultMessage = document.getElementById('result-message');
         const selectButton = document.getElementById('select-button');
-
+    
         if (nameLibrary.includes(inputValue)) {
             resultMessage.textContent = inputValue;
             resultMessage.style.display = 'block';
             selectButton.style.display = 'inline-block';
+    
+            // Show or hide the "Honor" message based on the selected name
+            const honorContainer = document.getElementById('honor-container');
+            if (inputValue === 'Ethan Binkley') {
+                honorContainer.style.display = 'block'; // Show Best Man message
+            } else {
+                honorContainer.style.display = 'none'; // Hide Best Man message
+            }
         } else {
             resultMessage.textContent = 'Name not found';
             resultMessage.style.display = 'block';
             selectButton.style.display = 'none';
         }
-    });
+    });    
 
     document.getElementById('select-button').addEventListener('click', function() {
         const selectedName = document.getElementById('result-message').textContent;
@@ -222,6 +230,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
             const inputContainers = document.querySelectorAll('#new-form .input-container');
             inputContainers.forEach(container => container.remove());
+            document.getElementById('honor-container').remove();
             document.getElementById('submit').remove();
 
             document.querySelector('#new-form h1').textContent = "💌 We look forward to seeing you!";
@@ -317,7 +326,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // JavaScript for info dropdown
 document.addEventListener("DOMContentLoaded", function() {
-
+    // Select all questions
     const questions = document.querySelectorAll('.faq li .question');
 
     questions.forEach(function(question) {

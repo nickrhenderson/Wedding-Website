@@ -385,6 +385,12 @@ body {
   transform: scale(1.05);
 }
 
+#honor-container p {
+  font-size: 2rem;
+  font-family: var(--caption-font);
+  margin-bottom: -2.5rem;
+}
+
 #plus-one-checkbox {
   display: inline-block;
   width: 20px;
