@@ -1,0 +1,485 @@
+@import url('https://fonts.googleapis.com/css2?family=Matemasie&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Handlee&display=swap');
+
+:root {
+    --primary-color: #fff;
+    --secondary-color: #000;
+}
+
+body,
+html {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    font-family: Arial, Helvetica, sans-serif;
+    scroll-behavior: smooth;
+}
+
+.img-shuffle {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-color);
+    text-align: center;
+    flex-direction: column;
+
+    img {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0;
+        transition: opacity 1s ease-in-out, transform 10s ease-in-out;
+        transform-origin: center center;
+        z-index: -1;
+    }
+
+    h1 span {
+        display: inline-block;
+        opacity: 0;
+        animation-duration: 1s;
+        animation-fill-mode: both;
+    }
+
+    h1 {
+        margin-top: 0;
+        font-family: 'Matemasie', sans-serif;
+        font-size: calc(5rem + 28 * (100vw - 375px)/ (1199 - 375));
+        margin-bottom: 0.5em;
+        font-weight: bold;
+        line-height: 1cap;
+
+        .nick {
+            animation-name: slideInRight;
+        }
+
+        .logan {
+            animation-name: slideInLeft;
+        }
+        .ampersand {
+            animation-name: growIn;
+        }
+
+        .nick,
+        .logan {
+            animation-delay: 0.5s;
+        }
+        .ampersand {
+            animation-delay: 1.25s;
+        }
+    }
+
+    p {
+        font-size: calc(1rem + 10 * (100vw - 375px) / (1199 - 375));
+        font-weight: 100;
+        margin: 0 0 0.5em 0;
+        opacity: 0;
+        transform: translateY(-20px);
+        animation: dropIn 2s 1.5s forwards; /* Adjust timing as needed */
+    }
+
+    .countdown {
+        display: flex;
+        justify-content: center;
+        text-align: center;
+    }
+    
+    .countdown-item {
+        margin: 0 10px;
+    }
+    
+    .countdown-number {
+        font-size: 2em;
+        font-weight: bold;
+    }
+    
+    .countdown-label {
+        font-size: 1em;
+        text-transform: uppercase;
+    }
+
+}
+
+.img-shuffle img.active {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+.polka-dot {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: var(--primary-color);
+    border-radius: 50%;
+    animation: moveDotUp 3s ease-out infinite;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.nav-bar { 
+    background: var(--primary-color);
+    position: relative;
+    top: 0;
+    border-radius: 50% 50% 0 0; 
+    margin-top: -4vh; 
+    margin-left: -12.5vw;
+    margin-right: -12.5vw;
+    width: 125vw; 
+    height: 100px;
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+    gap: 2vw;
+    z-index: 10;
+
+    a {
+        font-family: 'Open Sans', sans-serif;
+        letter-spacing: 2px;
+        text-decoration: none;
+        text-transform: uppercase;
+        color: var(--secondary-color);
+        border: 3px solid;
+        margin-top: 5vh;
+        padding: .25em .75em;
+        position: relative;
+        box-shadow: 1px 1px 0px 0px, 2px 2px 0px 0px, 3px 3px 0px 0px, 4px 4px 0px 0px, 5px 5px 0px 0px;
+        opacity: 0; /* Start hidden */
+        transform: scale(0.8); /* Start smaller */
+        transition: opacity 0.6s, transform 0.6s;
+        animation: none; /* Initially, no animation */
+    }
+    
+    a.in-view {
+        animation: growIn 0.6s forwards; /* Apply animation on entry */
+    }
+
+    a:active {
+        box-shadow: 0px 0px 0px 0px; /* Remove the shadow on active state */
+        top: 5px;
+        left: 5px;
+    }  
+}
+
+.about-us {
+    display: flex;
+    font-size: calc(1rem + 10 * (100vw - 375px) / (1199 - 375));;
+    background-color: var(--primary-color);
+    align-items: center; /* Vertically centers the content */
+    justify-content: flex-start; /* Keeps text and image to the left */
+    gap: 20px; /* Adds some space between the text and the image */
+    padding: 1vw 5vw 1vw 5vw;
+    color: var(--secondary-color);
+
+    .text-container {
+        display: flex;
+        flex-direction: column; /* Stacks header and paragraph vertically */
+        flex: 1; /* Allows the text container to take up remaining space */
+    }
+
+    .about-us p {
+        max-width: 80%; /* Limits the width of the paragraph */
+    }
+
+    img {
+        max-width: 50%; /* Adjusts the image width */
+        height: auto; /* Maintains aspect ratio */
+        font-family: 'Open Sans', sans-serif;
+        letter-spacing: 2px;
+        text-decoration: none;
+        text-transform: uppercase;
+        color: var(--secondary-color);
+        border: 3px solid;
+        margin-top: 5vh;
+        position: relative;
+        box-shadow: 1px 1px 0px 0px, 2px 2px 0px 0px, 3px 3px 0px 0px, 4px 4px 0px 0px, 5px 5px 0px 0px;
+    }
+}
+
+.registries {
+    background-color: var(--secondary-color);
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+}
+
+.registries svg {
+    fill: var(--primary-color);
+    width: 20vw;
+    height: auto;
+    padding: 0 1vw;
+    transition: transform 0.1s ease;
+    transform-origin: center;
+    will-change: transform; /* Helps optimize performance */
+}
+
+.info {
+    display: flex;
+    font-size: calc(1rem + 10 * (100vw - 375px) / (1199 - 375));;
+    background-color: var(--primary-color);
+    align-items: center; /* Vertically centers the content */
+    justify-content: flex-start; /* Keeps text and image to the left */
+    gap: 20px; /* Adds some space between the text and the image */
+    padding: 1vw 5vw 1vw 5vw;
+    color: var(--secondary-color);
+
+    .info p {
+        max-width: 80%; /* Limits the width of the paragraph */
+    }
+}
+
+.hidden {
+    display: none;
+}
+
+.rsvpButton {
+    position: relative; /* Position relative for pseudo-element */
+    background-color: transparent; /* Clear background */
+    border: 2px solid white; /* White border */
+    border-radius: 15px; /* Rounded corners */
+    padding: 10px 20px; /* Adjust padding for size */
+    margin-top: 1vh;
+    opacity: 0; /* For initial animation */
+    color: white; /* Text color */
+    font-size: 16px; /* Adjust font size */
+    cursor: pointer; /* Pointer cursor for hover effect */
+    overflow: hidden; /* Hide overflow for smooth animation */
+    transition: color 0.3s ease; /* Smooth transition for text color */
+    animation: growIn 2s 1s forwards; /* Initial grow-in animation */
+}
+
+.rsvpButton::before {
+    content: ''; /* Empty content for pseudo-element */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0; /* Start with no width */
+    height: 100%; /* Full height */
+    background-color: white; /* Background fill color */
+    z-index: -1; /* Place behind text */
+    transition: width 0.3s ease; /* Smooth transition for the fill */
+}
+
+.rsvpButton:hover::before {
+    width: 100%; /* Fill to full width on hover */
+}
+
+.rsvpButton:hover {
+    color: black; /* Change text color on hover */
+}
+
+.form-container {
+    margin-top: 20px;
+
+    .input-container {
+        position: relative;
+        width: 300px;
+        margin-top: 1vh;
+    }
+
+    input[type="text"], select {
+        width: 100%;
+        padding: 10px 5px;
+        margin-top: 5%;
+        border: 2px solid white;
+        border-radius: 15px;
+        background-color: transparent;
+        color: white;
+        font-size: 16px;
+        outline: none;
+        transition: border-color 0.3s ease;
+    }
+
+    input[type="text"]:focus, select:focus {
+        border-color: var(--primary-color);
+        color: var(--primary-color);
+    }
+
+    label {
+        position: absolute;
+        top: 50%;
+        left: 3%;
+        color: var(--primary-color);
+        font-size: 16px;
+        pointer-events: none;
+        transition: top 0.3s ease, font-size 0.3s ease, color 0.3s ease;
+    }
+
+    /* Change label color when the input has text or is focused */
+    input[type="text"]:focus + label,
+    input[type="text"]:not(:placeholder-shown) + label {
+        top: 0;
+        font-size: 12px;
+    }
+
+    /* Reset the label color when the input is valid */
+    input[type="text"]:valid + label {
+        color: var(--primary-color);
+    }
+
+    /* When input has error, change label color to red */
+    input[type="text"].error + label,
+    select.error + label {
+        color: rgb(255, 111, 111); /* Red color for invalid state */
+    }
+
+    /* Input validation styles */
+    input[type="text"].error, select.error {
+        border-color: rgb(255, 111, 111);
+        color: rgb(255, 111, 111);
+        animation: shake 0.5s ease-in-out, border-color 0.3s ease-in-out;
+    }
+
+    input[type="text"].valid, select.valid {
+        border-color: white;
+        color: white;
+    }
+
+    select {
+        color: var(--primary-color);
+    }
+
+
+    select option {
+        color: var(--secondary-color); /* Set the color of the options in the dropdown */
+    }
+
+    select:focus {
+        border-color: var(--primary-color);
+        color: var(--primary-color); /* Color of the selected text when focused */
+    }
+
+    select option[value=""][disabled] {
+        display: none;
+    }
+
+    button {
+        position: relative; /* Position relative for pseudo-element */
+        background-color: transparent; /* Clear background */
+        border: 2px solid white; /* White border */
+        border-radius: 15px; /* Rounded corners */
+        padding: 10px 20px; /* Adjust padding for size */
+        margin-top: 1vh;
+        color: white; /* Text color */
+        font-size: 16px; /* Adjust font size */
+        cursor: pointer; /* Pointer cursor for hover effect */
+        overflow: hidden; /* Hide overflow for smooth animation */
+        transition: color 0.3s ease; /* Smooth transition for text color */
+    }
+    
+    button::before {
+        content: ''; /* Empty content for pseudo-element */
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 0; /* Start with no width */
+        height: 100%; /* Full height */
+        background-color: white; /* Background fill color */
+        z-index: -1; /* Place behind text */
+        transition: width 0.3s ease; /* Smooth transition for the fill */
+    }
+    
+    button:hover::before {
+        width: 100%; /* Fill to full width on hover */
+    }
+    
+    button:hover {
+        color: black; /* Change text color on hover */
+    }
+}
+
+#responseMessage {
+    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent yellow background */
+    font-family: 'Handlee', cursive;
+    color: black; /* Text color */
+    padding: 20px; /* Add padding for spacing */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 18px; /* Larger font size */
+    margin-top: 20px; /* Space between form and response message */
+    text-align: center; /* Center-align text */
+    font-weight: bold; /* Make the text bold */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow for better visibility */
+}
+
+
+
+
+/* Shaking animation */
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+    100% { transform: translateX(0); }
+}
+
+/* Keyframe animations for title */
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes growIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes dropIn {
+    from {
+        opacity: 0;
+        transform: translateY(-15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Keyframes for dot movement */
+@keyframes moveDotUp {
+    0% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-150px); /* Move dots upwards */
+    }
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
