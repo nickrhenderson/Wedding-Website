@@ -201,6 +201,29 @@ html {
     }
 }
 
+/* Media query for screens less than 1557px wide */
+@media (max-width: 1557px) {
+    .about-us {
+        flex-direction: column; /* Stacks the content vertically */
+        align-items: center; /* Centers the content horizontally */
+        justify-content: center; /* Centers the content vertically */
+        text-align: center; /* Centers text inside the text container */
+    }
+
+    .about-us img {
+        max-width: 80%; /* Makes the image take up more space on smaller screens */
+        margin: 20px 0; /* Adds some spacing above and below the image */
+    }
+
+    .about-us .text-container {
+        order: 3; /* Moves the text below the image */
+    }
+
+    .about-us h2 {
+        order: 1; /* Ensures the header is above the image */
+    }
+}
+
 .registries {
     background-color: var(--secondary-color);
     justify-content: center;
