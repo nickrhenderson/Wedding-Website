@@ -27,7 +27,7 @@ setInterval(shuffleImages, imageDelay);
 document.addEventListener('DOMContentLoaded', function () {
     function updateCountdown() {
         const now = new Date();
-        const targetDate = new Date('2025-05-12T00:00:00');
+        const targetDate = new Date('2025-05-12T15:00:00');
 
         const timeDifference = targetDate - now;
 
@@ -173,6 +173,24 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 
+// Get the reference to the 'users' node
+const usersRef = ref(database, 'users'); 
+
+get(usersRef).then((snapshot) => {
+    if (snapshot.exists()) {
+        const users = snapshot.val();
+        const userCount = Object.keys(users).length; // Count the number of users
+
+        // Get the <p> element by ID and replace the {invitees} placeholder
+        const inviteesParagraph = document.getElementById('inviteesParagraph');
+        inviteesParagraph.innerHTML = inviteesParagraph.innerHTML.replace('{invitees}', userCount);
+    } else {
+        console.log('No users found in the database.');
+    }
+}).catch((error) => {
+    console.error('Error fetching data:', error);
+});
+
 // The rest of your event listeners and logic
 const rsvpButton = document.getElementById('rsvpButton');
 const formContainer = document.getElementById('formContainer');
@@ -291,3 +309,28 @@ function updateAttendanceInDatabase(name, data) {
         console.error('Error updating data:', error);
     });
 }
+
+// Function to observe the elements when they come into view
+function handleVisibility(entries, observer) {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            if (entry.target.tagName === 'H2' || entry.target.tagName === 'P') {
+                entry.target.classList.add('visible');
+            }
+            if (entry.target.tagName === 'H3') {
+                entry.target.classList.add('visible');  // Add the 'visible' class to trigger the width change
+            }
+            observer.unobserve(entry.target);
+        }
+    });
+}
+
+// Create an IntersectionObserver instance
+const observer = new IntersectionObserver(handleVisibility, {
+    threshold: 0.1, // Trigger when 10% of the element is in view
+});
+
+// Observe the elements
+document.querySelectorAll('h2, p, h3').forEach(element => {
+    observer.observe(element);
+});

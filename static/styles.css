@@ -243,16 +243,71 @@ html {
 
 .info {
     display: flex;
-    font-size: calc(1rem + 10 * (100vw - 375px) / (1199 - 375));;
+    flex-direction: column;
+    text-align: center;
+    font-size: calc(1rem + 10 * (100vw - 375px) / (1199 - 375));
     background-color: var(--primary-color);
-    align-items: center; /* Vertically centers the content */
-    justify-content: flex-start; /* Keeps text and image to the left */
-    gap: 20px; /* Adds some space between the text and the image */
-    padding: 1vw 5vw 1vw 5vw;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 20px; /* Overall spacing between elements in the container */
+    padding: 1vw 5vw;
     color: var(--secondary-color);
 
-    .info p {
-        max-width: 80%; /* Limits the width of the paragraph */
+    h2:nth-of-type(1) {
+        background-color: #FFB6C1; /* Light pink */
+    }
+
+    h2:nth-of-type(2) {
+        background-color: #87CEFA; /* Light blue */
+    }
+
+    h2:nth-of-type(3) {
+        background-color: #98FB98; /* Pale green */
+    }
+
+    h2, p {
+        opacity: 0;
+        margin: 0;
+        max-width: 80%;
+        padding: 0 1vw 0 1vw;
+        transform: translateY(20px); /* Or any other transform to create the "slide" effect */
+        transition: opacity 1s ease, transform 1s ease;
+    }
+
+    p {
+        margin-top: 0;
+        padding-top: 0;
+    }
+
+    h2.visible, p.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    h3 {
+        position: relative;
+        padding: 5vh 0 5vh 0;
+        margin: 0;
+    }
+    
+    h3::after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0;
+        height: 2px;
+        background-color: black;
+        transition: width 1s ease;
+    }
+    
+    h3.visible::after {
+        width: 80vw;
+    }
+
+    .map-container {
+        width: 80%; /* Adjust the width as needed */
+        height: 450px; /* Height of the map */
     }
 }
 
