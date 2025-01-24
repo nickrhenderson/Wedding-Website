@@ -191,13 +191,12 @@ nameSubmit.addEventListener('click', function(event) {
     event.preventDefault();
 
     const nameInput = document.getElementById('name').value.trim(); // Get the name input and trim spaces
-    const formattedName = formatName(nameInput); // Format the name to have the first letter capitalized
 
     // Validate name field
-    if (formattedName === '') {
+    if (nameInput === '') {
         document.getElementById('name').classList.add('error');
     } else {
-        checkNameInDatabase(formattedName).then(nameExists => {
+        checkNameInDatabase(nameInput).then(nameExists => {
             const nameLabel = document.querySelector('label[for="name"]'); // Select the label for the name input
             
             if (nameExists) {
@@ -220,8 +219,6 @@ attendanceSubmit.addEventListener('click', function(event) {
     const plusOneInput = document.getElementById('plus-one');  // Assuming you have a plus-one input field
     const nameInput = document.getElementById('name').value.trim(); // Get name input value and format
 
-    const formattedName = formatName(nameInput); // Format the name to have the first letter capitalized
-
     if (attendanceInput.value === '') {
         attendanceInput.classList.add('error');
     } else {
@@ -233,30 +230,20 @@ attendanceSubmit.addEventListener('click', function(event) {
         };
 
         // Update the Firebase database with the attendance and plus-one info
-        updateAttendanceInDatabase(formattedName, attendanceData);
+        updateAttendanceInDatabase(nameInput, attendanceData);
 
         if (attendanceInput.value === 'attending') {
-            responseMessage.textContent = `🎊 We look forward to seeing you ${formattedName}! 🎊`;
+            responseMessage.textContent = `🎊 We look forward to seeing you ${nameInput}! 🎊`;
         } else if (attendanceInput.value === 'maybe') {
-            responseMessage.textContent = `🎊 We look forward hoping to seeing you ${formattedName}! 🎊`;
+            responseMessage.textContent = `🎊 We look forward hoping to seeing you ${nameInput}! 🎊`;
         } else if (attendanceInput.value === 'not-attending') {
-            responseMessage.textContent = `🎊 Sorry you can't attend ${formattedName}, best wishes! 🎊`;
+            responseMessage.textContent = `🎊 Sorry you can't attend ${nameInput}, best wishes! 🎊`;
         }
 
         formContainer.classList.add('hidden');
         responseMessage.classList.remove('hidden');
     }
 });
-
-// Function to format names (capitalize first letter of each word while preserving internal capitalization)
-function formatName(name) {
-    return name
-        .split(' ') // Split the name into words
-        .map(word => 
-            word.charAt(0).toUpperCase() + word.slice(1) // Capitalize the first letter, keep the rest as is
-        )
-        .join(' '); // Join the words back into a full name
-}
 
 function checkNameInDatabase(name) {
     const dbRef = ref(database, 'users');
@@ -270,7 +257,7 @@ function checkNameInDatabase(name) {
         }
 
         for (const key in usersData) {
-            if (key === name) {
+            if (key.toLowerCase === name.toLowerCase) {
                 return true;  // Name exists in the database (case-sensitive comparison)
             }
         }
