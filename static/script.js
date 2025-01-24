@@ -173,24 +173,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 
-// Get the reference to the 'users' node
-const usersRef = ref(database, 'users'); 
-
-get(usersRef).then((snapshot) => {
-    if (snapshot.exists()) {
-        const users = snapshot.val();
-        const userCount = Object.keys(users).length; // Count the number of users
-
-        // Get the <p> element by ID and replace the {invitees} placeholder
-        const inviteesParagraph = document.getElementById('inviteesParagraph');
-        inviteesParagraph.innerHTML = inviteesParagraph.innerHTML.replace('{invitees}', userCount);
-    } else {
-        console.log('No users found in the database.');
-    }
-}).catch((error) => {
-    console.error('Error fetching data:', error);
-});
-
 // The rest of your event listeners and logic
 const rsvpButton = document.getElementById('rsvpButton');
 const formContainer = document.getElementById('formContainer');
@@ -266,11 +248,13 @@ attendanceSubmit.addEventListener('click', function(event) {
     }
 });
 
-// Function to format names (capitalize first letter of each word)
+// Function to format names (capitalize first letter of each word while preserving internal capitalization)
 function formatName(name) {
     return name
         .split(' ') // Split the name into words
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()) // Capitalize first letter of each word
+        .map(word => 
+            word.charAt(0).toUpperCase() + word.slice(1) // Capitalize the first letter, keep the rest as is
+        )
         .join(' '); // Join the words back into a full name
 }
 
@@ -285,9 +269,6 @@ function checkNameInDatabase(name) {
             return false;
         }
 
-        // Debugging: Print all user names in the database
-        console.log('Users in database:', Object.keys(usersData));
-
         for (const key in usersData) {
             if (key === name) {
                 return true;  // Name exists in the database (case-sensitive comparison)
@@ -295,8 +276,6 @@ function checkNameInDatabase(name) {
         }
         return false;  // Name does not exist
     }).catch((error) => {
-        // Handle any potential errors in the Firebase query
-        console.error('Error fetching data:', error);
     });
 }
 
