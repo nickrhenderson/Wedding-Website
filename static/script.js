@@ -187,94 +187,99 @@ rsvpButton.addEventListener('click', () => {
     formContainer.classList.remove('hidden');
 });
 
-nameSubmit.addEventListener('click', function(event) {
+async function handleNameSubmit(event) {
     event.preventDefault();
 
-    const nameInput = document.getElementById('name').value.trim(); // Get the name input and trim spaces
-
+    const nameInput = await formatName(document.getElementById('name').value.trim());
+    const nameLabel = document.querySelector('label[for="name"]');
+    
     // Validate name field
     if (nameInput === '') {
         document.getElementById('name').classList.add('error');
+        nameLabel.textContent = "NAME NOT FOUND";
     } else {
-        checkNameInDatabase(nameInput).then(nameExists => {
-            const nameLabel = document.querySelector('label[for="name"]'); // Select the label for the name input
-            
-            if (nameExists) {
-                document.getElementById('name').classList.remove('error');
-                nameLabel.textContent = "NAME"; // Reset label to default text
-                nameEntry.classList.add('hidden');
-                attendanceOptions.classList.remove('hidden');
-            } else {
-                document.getElementById('name').classList.add('error');
-                nameLabel.textContent = "NAME NOT FOUND"; // Update label text to indicate the name wasn't found
-            }
-        });
+        document.getElementById('name').classList.remove('error');
+        nameLabel.textContent = "NAME";
+        nameEntry.classList.add('hidden');
+        attendanceOptions.classList.remove('hidden');
+        checkNameInDatabase(nameInput);
     }
-});
+}
 
-attendanceSubmit.addEventListener('click', function(event) {
+async function handleAttendanceSubmit(event) {
     event.preventDefault();
 
     const attendanceInput = document.getElementById('attendance');
-    const plusOneInput = document.getElementById('plus-one');  // Assuming you have a plus-one input field
-    const nameInput = document.getElementById('name').value.trim(); // Get name input value and format
+    const plusOneInput = document.getElementById('plus-one');
+    const nameInput = await formatName(document.getElementById('name').value.trim());
 
     if (attendanceInput.value === '') {
         attendanceInput.classList.add('error');
     } else {
         attendanceInput.classList.remove('error');
-
         const attendanceData = {
             attendance: attendanceInput.value,
-            'plus-one': plusOneInput.value.trim() || ''  // Default to an empty string if no plus-one is provided
+            'plus-one': plusOneInput.value.trim() || ''
         };
 
-        // Update the Firebase database with the attendance and plus-one info
+        // Update database
         updateAttendanceInDatabase(nameInput, attendanceData);
-
-        if (attendanceInput.value === 'attending') {
-            responseMessage.textContent = `🎊 We look forward to seeing you ${nameInput}! 🎊`;
-        } else if (attendanceInput.value === 'maybe') {
-            responseMessage.textContent = `🎊 We look forward hoping to seeing you ${nameInput}! 🎊`;
-        } else if (attendanceInput.value === 'not-attending') {
-            responseMessage.textContent = `🎊 Sorry you can't attend ${nameInput}, best wishes! 🎊`;
-        }
-
+        displayAttendanceMessage(attendanceInput.value, nameInput);
         formContainer.classList.add('hidden');
         responseMessage.classList.remove('hidden');
     }
-});
-
-function checkNameInDatabase(name) {
-    const dbRef = ref(database, 'users');
-    return get(dbRef).then((snapshot) => {
-        const usersData = snapshot.val();
-
-        // If there's no data, return false
-        if (!usersData) {
-            console.error('No data found in the database!');
-            return false;
-        }
-
-        for (const key in usersData) {
-            if (key.toLowerCase === name.toLowerCase) {
-                return true;  // Name exists in the database (case-sensitive comparison)
-            }
-        }
-        return false;  // Name does not exist
-    }).catch((error) => {
-    });
 }
 
-// Function to update attendance and plus-one in the database
+function displayAttendanceMessage(status, name) {
+    const messages = {
+        'attending': `🎊 We look forward to seeing you ${name}! 🎊`,
+        'maybe': `🎊 We look forward hoping to seeing you ${name}! 🎊`,
+        'not-attending': `🎊 Sorry you can't attend ${name}, best wishes! 🎊`
+    };
+    responseMessage.textContent = messages[status] || '';
+}
+
+async function formatName(name) {
+    const dbRef = ref(database, 'users');
+    try {
+        const snapshot = await get(dbRef);
+        const usersData = snapshot.val();
+        
+        if (!usersData) return '';
+        
+        const matchedKey = Object.keys(usersData).find(key => key.toLowerCase() === name.toLowerCase());
+        return matchedKey ? String(matchedKey) : '';
+    } catch (error) {
+        return ''; // Return an empty string on error
+    }
+}
+
+async function checkNameInDatabase(name) {
+    const dbRef = ref(database, 'users');
+    try {
+        const snapshot = await get(dbRef);
+        const usersData = snapshot.val();
+        
+        if (!usersData) return false;
+        
+        return usersData.hasOwnProperty(name); // Check if the name exists in the database
+    } catch (error) {
+        return false; // Return false if an error occurs
+    }
+}
+
 function updateAttendanceInDatabase(name, data) {
-    const userRef = ref(database, 'users/' + name);  // Reference the user by their name (case-sensitive)
+    const userRef = ref(database, 'users/' + name);
     update(userRef, data).then(() => {
         console.log(`Successfully updated attendance for ${name}`);
     }).catch((error) => {
         console.error('Error updating data:', error);
     });
 }
+
+// Event listeners
+nameSubmit.addEventListener('click', handleNameSubmit);
+attendanceSubmit.addEventListener('click', handleAttendanceSubmit);
 
 // Function to observe the elements when they come into view
 function handleVisibility(entries, observer) {
