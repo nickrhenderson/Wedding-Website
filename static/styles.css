@@ -25,6 +25,7 @@ html {
     color: var(--primary-color);
     text-align: center;
     flex-direction: column;
+    z-index: 1;
 
     img {
         position: absolute;
@@ -52,26 +53,59 @@ html {
         font-family: 'Matemasie', sans-serif;
         font-size: calc(5rem + 28 * (100vw - 375px)/ (1199 - 375));
         margin-bottom: 0.5em;
+        letter-spacing: -0.7rem;
         font-weight: bold;
         line-height: 1cap;
 
         .nick {
-            animation-name: slideInRight;
+            animation: growLetter 0.5s ease forwards;
+            animation-delay: 1s;
+        }
+        
+        .nick:nth-child(2) {
+            animation-delay: 1.15s;
+        }
+        
+        .nick:nth-child(3) {
+            animation-delay: 1.3s;
+        }
+        
+        .nick:nth-child(4) {
+            animation-delay: 1.45s;
+        }
+        
+        .ampersand {
+            animation-delay: 1.6s;
+        }
+        
+        .logan {
+            animation: growLetter 0.7s ease forwards;
+            animation-delay: 1.7s;
+        }
+        
+        .logan:nth-child(7) {
+            animation-delay: 1.7s;
+        }
+        
+        .logan:nth-child(8) {
+            animation-delay: 1.85s;
+        }
+        
+        .logan:nth-child(9) {
+            animation-delay: 2s;
+        }
+        
+        .logan:nth-child(10) {
+            animation-delay: 2.15s;
         }
 
-        .logan {
-            animation-name: slideInLeft;
-        }
-        .ampersand {
-            animation-name: growIn;
+        .logan:nth-child(11) {
+            animation-delay: 2.3s;
         }
 
-        .nick,
-        .logan {
-            animation-delay: 0.5s;
-        }
         .ampersand {
-            animation-delay: 1.25s;
+            animation: growAmp 0.5s ease forwards;
+            animation-delay: 2.8s;
         }
     }
 
@@ -81,7 +115,7 @@ html {
         margin: 0 0 0.5em 0;
         opacity: 0;
         transform: translateY(-20px);
-        animation: dropIn 2s 1.5s forwards; /* Adjust timing as needed */
+        animation: dropIn 2s 3s forwards; /* Adjust timing as needed */
     }
 
     .countdown {
@@ -168,7 +202,7 @@ html {
 
 .about-us {
     display: flex;
-    font-size: calc(1rem + 10 * (100vw - 375px) / (1199 - 375));;
+    font-size: calc(1rem + 10 * (100vw - 375px) / (1199 - 375));
     background-color: var(--primary-color);
     align-items: center; /* Vertically centers the content */
     justify-content: flex-start; /* Keeps text and image to the left */
@@ -180,10 +214,6 @@ html {
         display: flex;
         flex-direction: column; /* Stacks header and paragraph vertically */
         flex: 1; /* Allows the text container to take up remaining space */
-    }
-
-    .about-us p {
-        max-width: 80%; /* Limits the width of the paragraph */
     }
 
     img {
@@ -198,6 +228,40 @@ html {
         margin-top: 5vh;
         position: relative;
         box-shadow: 1px 1px 0px 0px, 2px 2px 0px 0px, 3px 3px 0px 0px, 4px 4px 0px 0px, 5px 5px 0px 0px;
+    }
+}
+
+.heart-container {
+    position: absolute;
+    overflow: hidden;
+    width: 100%;
+    overflow: visible;
+    pointer-events: none; /* Prevent user interaction */
+    z-index: 100;
+}
+
+.heart {
+    position: absolute;
+    font-family: 'Arial', sans-serif; /* Default font family, but can be customized */
+    color: red; /* Red heart color */
+    transform-origin: center;
+    transform: scale(0) translateY(20px) rotate(var(--initial-rotation, 0deg)); /* Rotation and scaling */
+    opacity: 0;
+    will-change: transform, opacity;
+    animation: grow-float 5s ease-in-out forwards;
+}
+
+@keyframes grow-float {
+    0% {
+        transform: scale(0.5) translateY(20px) rotate(var(--initial-rotation, 0deg));
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1) translateY(-500px) rotate(calc(var(--initial-rotation, 0deg) + 45deg)); /* Add spin */
+        opacity: 0;
     }
 }
 
@@ -226,19 +290,42 @@ html {
 
 .registries {
     background-color: var(--secondary-color);
+    display: flex; /* Use flexbox for horizontal layout */
+    align-items: center; /* Vertically align the SVG and content */
+    font-size: calc(0.5rem + 10 * (100vw - 375px) / (1199 - 375));
     justify-content: center;
-    text-align: center;
     overflow: hidden;
-}
 
-.registries svg {
-    fill: var(--primary-color);
-    width: 20vw;
-    height: auto;
-    padding: 0 1vw;
-    transition: transform 0.1s ease;
-    transform-origin: center;
-    will-change: transform; /* Helps optimize performance */
+    svg {
+        flex-shrink: 0; /* Prevent SVG from shrinking */
+        fill: var(--primary-color);
+        width: 20vw; /* Adjust size of the SVG */
+        height: auto; /* Maintain aspect ratio */
+        margin-right: 2rem; /* Add spacing between SVG and content */
+    }
+
+    .content {
+        display: flex;
+        flex-direction: column; /* Stack content vertically */
+        justify-content: center; /* Center the content vertically */
+        text-align: left; /* Align text to the left */
+        width: 50%;
+        max-width: 700px;
+    }
+
+    .giftButton {
+        width: 100%;
+    }
+
+    h1 {
+        color: white;
+        margin-bottom: 1vw;
+    }
+
+    p {
+        color: white;
+        margin-top: 1vw; /* Remove default margins */
+    }
 }
 
 .info {
@@ -253,61 +340,79 @@ html {
     padding: 1vw 5vw;
     color: var(--secondary-color);
 
-    h2:nth-of-type(1) {
-        background-color: #FFB6C1; /* Light pink */
+    h1 {
+        margin-bottom: 2rem;
     }
 
-    h2:nth-of-type(2) {
-        background-color: #87CEFA; /* Light blue */
-    }
-
-    h2:nth-of-type(3) {
-        background-color: #98FB98; /* Pale green */
-    }
-
-    h2, p {
-        opacity: 0;
-        margin: 0;
-        max-width: 80%;
-        padding: 0 1vw 0 1vw;
-        transform: translateY(20px); /* Or any other transform to create the "slide" effect */
+    div.section {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 20px; /* Space between the h2 and p */
+        width: 100%;
+        max-width: 1500px;
+        text-align: left;
+        position: relative;
+        margin: 2rem 0;
+        opacity: 0; /* Initially hidden */
+        transform: translateY(20px); /* Slide in effect */
         transition: opacity 1s ease, transform 1s ease;
     }
 
-    p {
-        margin-top: 0;
-        padding-top: 0;
-    }
-
-    h2.visible, p.visible {
-        opacity: 1;
+    div.section.visible {
+        opacity: 1; /* Fully visible when active */
         transform: translateY(0);
     }
 
-    h3 {
-        position: relative;
-        padding: 5vh 0 5vh 0;
-        margin: 0;
+    div.section h2 {
+        writing-mode: vertical-rl; /* Rotate the text */
+        transform: rotate(180deg); /* Flip text to read top-down */
+        background-color: var(--secondary-color);
+        color: var(--primary-color);
+        font-size: 1.5rem;
+        padding: 0.5rem;
+        text-align: center;
+        flex-shrink: 0;
+        transition: opacity 1s ease, transform 1s ease;
+    }
+
+    div.section p {
+        flex-grow: 1;
+        line-height: 1.6;
+        opacity: 0;
+        transform: translateY(20px); /* Slide in effect */
+        transition: opacity 1s ease, transform 1s ease;
+    }
+
+    div.section.visible p {
+        opacity: 1; /* Fully visible when active */
+        transform: translateY(0);
     }
     
-    h3::after {
-        content: '';
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 0;
-        height: 2px;
-        background-color: black;
-        transition: width 1s ease;
+    /* Style individual <h2> for better distinction (optional) */
+    div.section:nth-of-type(1) h2 {
+        background-color: #FFB6C1; /* Light pink */
     }
-    
-    h3.visible::after {
-        width: 80vw;
+
+    div.section:nth-of-type(2) h2 {
+        background-color: #87CEFA; /* Light blue */
+    }
+
+    div.section:nth-of-type(3) h2 {
+        background-color: #98FB98; /* Pale green */
     }
 
     .map-container {
-        width: 80%; /* Adjust the width as needed */
-        height: 450px; /* Height of the map */
+        width: 100%; /* Adjusts the image width */
+        height: auto; /* Maintains aspect ratio */
+        font-family: 'Open Sans', sans-serif;
+        letter-spacing: 2px;
+        text-decoration: none;
+        text-transform: uppercase;
+        color: var(--secondary-color);
+        border: 3px solid;
+        position: relative;
+        box-shadow: 1px 1px 0px 0px, 2px 2px 0px 0px, 3px 3px 0px 0px, 4px 4px 0px 0px, 5px 5px 0px 0px;
     }
 }
 
@@ -315,23 +420,21 @@ html {
     display: none;
 }
 
-.rsvpButton {
+button {
     position: relative; /* Position relative for pseudo-element */
     background-color: transparent; /* Clear background */
     border: 2px solid white; /* White border */
     border-radius: 15px; /* Rounded corners */
     padding: 10px 20px; /* Adjust padding for size */
-    margin-top: 1vh;
-    opacity: 0; /* For initial animation */
     color: white; /* Text color */
     font-size: 16px; /* Adjust font size */
     cursor: pointer; /* Pointer cursor for hover effect */
     overflow: hidden; /* Hide overflow for smooth animation */
     transition: color 0.3s ease; /* Smooth transition for text color */
-    animation: growIn 2s 1s forwards; /* Initial grow-in animation */
+    z-index: 1;
 }
 
-.rsvpButton::before {
+button::before {
     content: ''; /* Empty content for pseudo-element */
     position: absolute;
     top: 0;
@@ -343,12 +446,18 @@ html {
     transition: width 0.3s ease; /* Smooth transition for the fill */
 }
 
-.rsvpButton:hover::before {
+button:hover::before {
     width: 100%; /* Fill to full width on hover */
 }
 
-.rsvpButton:hover {
+button:hover {
     color: black; /* Change text color on hover */
+}
+
+.rsvpButton {
+    opacity: 0; /* For initial animation */
+    margin-top: 1vh;
+    animation: growIn 2s 1s forwards; /* Initial grow-in animation */
 }
 
 .form-container {
@@ -449,7 +558,7 @@ html {
         overflow: hidden; /* Hide overflow for smooth animation */
         transition: color 0.3s ease; /* Smooth transition for text color */
     }
-    
+
     button::before {
         content: ''; /* Empty content for pseudo-element */
         position: absolute;
@@ -487,6 +596,8 @@ html {
 
 
 
+
+
 /* Shaking animation */
 @keyframes shake {
     0% { transform: translateX(0); }
@@ -497,25 +608,37 @@ html {
 }
 
 /* Keyframe animations for title */
-@keyframes slideInRight {
-    from {
-        transform: translateX(100%);
+@keyframes growLetter {
+    0% {
         opacity: 0;
+        transform: scale(0);
     }
-    to {
-        transform: translateX(0);
+    50% {
         opacity: 1;
+        transform: scale(1.2); /* Slightly larger at the middle */
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1); /* Return to original size */
     }
 }
 
-@keyframes slideInLeft {
-    from {
-        transform: translateX(-100%);
+/* Keyframe animations for title with rotation and text shadow */
+@keyframes growAmp {
+    0% {
         opacity: 0;
+        transform: scale(0) rotate(0deg) translateY(0rem);
+        text-shadow: none; /* No shadow at the start */
     }
-    to {
-        transform: translateX(0);
+    50% {
         opacity: 1;
+        transform: scale(5) rotate(-25deg);
+        text-shadow: 0 4px 10px rgba(0, 0, 0, 0.6); /* Shadow conforms to letters */
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1.1) rotate(-15deg) translateY(0.5rem);
+        text-shadow: none; /* Remove shadow at the end */
     }
 }
 

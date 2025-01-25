@@ -282,26 +282,69 @@ nameSubmit.addEventListener('click', handleNameSubmit);
 attendanceSubmit.addEventListener('click', handleAttendanceSubmit);
 
 // Function to observe the elements when they come into view
-function handleVisibility(entries, observer) {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            if (entry.target.tagName === 'H2' || entry.target.tagName === 'P') {
-                entry.target.classList.add('visible');
-            }
-            if (entry.target.tagName === 'H3') {
-                entry.target.classList.add('visible');  // Add the 'visible' class to trigger the width change
-            }
-            observer.unobserve(entry.target);
-        }
-    });
-}
+document.addEventListener('DOMContentLoaded', () => {
+    const sections = document.querySelectorAll('.info > div.section');
 
-// Create an IntersectionObserver instance
-const observer = new IntersectionObserver(handleVisibility, {
-    threshold: 0.1, // Trigger when 10% of the element is in view
+    const revealOnScroll = () => {
+        sections.forEach(section => {
+            const sectionTop = section.getBoundingClientRect().top;
+            const viewportHeight = window.innerHeight;
+
+            if (sectionTop < viewportHeight - 100) { // Adjust threshold as needed
+                section.classList.add('visible');
+            }
+        });
+    };
+
+    // Trigger animations on scroll
+    window.addEventListener('scroll', revealOnScroll);
+
+    // Trigger animations on load in case some sections are already in view
+    revealOnScroll();
 });
 
-// Observe the elements
-document.querySelectorAll('h2, p, h3').forEach(element => {
-    observer.observe(element);
+// Function to generate about-us hearts
+document.addEventListener("DOMContentLoaded", () => {
+    const heartContainer = document.querySelector(".heart-container");
+
+    // Check if heartContainer exists
+    if (!heartContainer) {
+        console.error("Missing .heart-container element.");
+        return;
+    }
+
+    // Function to generate hearts
+    function createHearts() {
+        // Generate hearts periodically
+        setInterval(() => {
+            const heart = document.createElement("div");
+            heart.classList.add("heart");
+
+            // Randomize size, position, rotation, and animation duration
+            const size = Math.random() * 20 + 10; // Random size (10px to 30px)
+            const left = Math.random() * 100; // Random horizontal position (0% to 100%)
+            const duration = Math.random() * 3 + 3; // Random animation duration (3s to 6s)
+            const rotation = Math.random() * 360 - 180; // Random initial rotation (-180deg to 180deg)
+
+            // Add heart emoji content
+            heart.textContent = "❤️"; // Heart emoji
+
+            // Apply styles
+            heart.style.fontSize = `${size}px`; // Size of the heart emoji
+            heart.style.left = `${left}%`; // Position horizontally
+            heart.style.animationDuration = `${duration}s`; // Random duration
+            heart.style.setProperty("--initial-rotation", `${rotation}deg`); // Set custom rotation
+            heart.style.transform = `rotate(${rotation}deg)`; // Apply random starting rotation
+
+            heartContainer.appendChild(heart);
+
+            // Remove the heart after its animation completes
+            setTimeout(() => {
+                heart.remove();
+            }, duration * 1000); // Remove after the animation duration
+        }, Math.random() * 500 + 300); // Randomize interval (300ms to 800ms)
+    }
+
+    // Start generating hearts immediately after DOM is loaded
+    createHearts();
 });
