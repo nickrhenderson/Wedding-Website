@@ -348,3 +348,105 @@ document.addEventListener("DOMContentLoaded", () => {
     // Start generating hearts immediately after DOM is loaded
     createHearts();
 });
+
+// Function to count RSVP statuses and log to console
+window.logRSVPCounts = async function () {
+    const dbRef = ref(database, 'users');
+    try {
+        const snapshot = await get(dbRef);
+        const usersData = snapshot.val();
+
+        if (!usersData) {
+            console.log("No RSVP data found.");
+            return;
+        }
+
+        let categories = {
+            attending: { count: 0, names: [] },
+            plusOne: { count: 0, names: [] },
+            maybe: { count: 0, names: [] },
+            notAttending: { count: 0, names: [] },
+            undecided: { count: 0, names: [] }
+        };
+
+        Object.entries(usersData).forEach(([name, user]) => {
+            if (user.attendance === 'attending') {
+                categories.attending.count++;
+                categories.attending.names.push(name);
+                if (user['plus-one']) {
+                    categories.plusOne.count++;
+                    categories.plusOne.names.push(`${name}'s Plus One: ${user['plus-one']}`);
+                }
+            } else if (user.attendance === 'maybe') {
+                categories.maybe.count++;
+                categories.maybe.names.push(name);
+            } else if (user.attendance === 'not-attending') {
+                categories.notAttending.count++;
+                categories.notAttending.names.push(name);
+            } else {
+                categories.undecided.count++;
+                categories.undecided.names.push(name);
+            }
+        });
+
+        // Check if modal exists, if not, create it
+        let modal = document.getElementById("rsvpModal");
+        if (!modal) {
+            modal = document.createElement("div");
+            modal.id = "rsvpModal";
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <button class="close-btn">&times;</button>
+                    <h2>RSVP List</h2>
+                    <div id="rsvpContainer"></div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+
+            // Close modal event
+            modal.querySelector(".close-btn").onclick = () => closeModal();
+            modal.onclick = (e) => { if (e.target === modal) closeModal(); };
+        }
+
+        // Generate category sections
+        let container = document.getElementById("rsvpContainer");
+        container.innerHTML = "";
+
+        Object.keys(categories).forEach(category => {
+            let section = document.createElement("div");
+            section.classList.add("rsvp-section");
+
+            // Format category names (e.g., "plusOne" -> "Plus One")
+            let formattedCategory = category.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
+
+            let header = document.createElement("button");
+            header.innerText = `${formattedCategory}: ${categories[category].count}`;
+            header.classList.add("rsvp-header");
+            header.onclick = function () {
+                content.style.display = content.style.display === "none" ? "block" : "none";
+            };
+
+            let content = document.createElement("div");
+            content.classList.add("rsvp-content");
+            content.style.display = "none";
+            content.innerHTML = categories[category].names.length > 0 ? categories[category].names.join("<br>") : "No names available";
+
+            section.appendChild(header);
+            section.appendChild(content);
+            container.appendChild(section);
+        });
+
+        // Show modal
+        modal.style.display = "flex";
+        document.body.classList.add("blurred");
+
+    } catch (error) {
+        console.error("Error fetching RSVP data:", error);
+    }
+};
+
+// Function to close modal
+function closeModal() {
+    document.getElementById("rsvpModal").style.display = "none";
+    document.body.classList.remove("blurred");
+}

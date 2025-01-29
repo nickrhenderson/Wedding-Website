@@ -25,7 +25,7 @@ html {
     color: var(--primary-color);
     text-align: center;
     flex-direction: column;
-    z-index: 1;
+    z-index: -1;
 
     img {
         position: absolute;
@@ -627,7 +627,7 @@ button:hover {
 @keyframes growAmp {
     0% {
         opacity: 0;
-        transform: scale(0) rotate(0deg) translateY(0rem);
+        transform: scale(0) rotate(0deg);
         text-shadow: none; /* No shadow at the start */
     }
     50% {
@@ -637,7 +637,7 @@ button:hover {
     }
     100% {
         opacity: 1;
-        transform: scale(1.1) rotate(-15deg) translateY(0.5rem);
+        transform: scale(1.1) rotate(-15deg);
         text-shadow: none; /* Remove shadow at the end */
     }
 }
@@ -683,4 +683,77 @@ button:hover {
     100% {
         opacity: 0;
     }
+}
+
+/* Modal Background */
+#rsvpModal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(8px);
+    justify-content: center; align-items: center;
+    z-index: 1000;
+}
+
+/* Modal Content */
+.modal-content {
+    background: white; padding: 20px;
+    border-radius: 10px;
+    width: 400px; max-width: 90%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    text-align: center; position: relative;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Close Button */
+.close-btn {
+    position: absolute; top: 10px; right: 15px;
+    background: none; border: none;
+    font-size: 24px; cursor: pointer;
+    color: black;
+}
+.close-btn:hover { color: red; }
+
+/* RSVP Section */
+.rsvp-section { margin-bottom: 10px; }
+.rsvp-header {
+    background: #007bff; color: white; padding: 10px;
+    border: none; cursor: pointer; width: 100%; text-align: left;
+    border-radius: 5px; position: relative;
+}
+.rsvp-header::before,
+.rsvp-header::after {
+    content: ''; position: absolute; top: 0; left: 0;
+    width: 100%; height: 100%; background: #007bff;
+    border-radius: 5px; z-index: -1; transition: all 0.3s ease;
+}
+.rsvp-header:focus::before,
+.rsvp-header:active::before,
+.rsvp-header:focus::after,
+.rsvp-header:active::after { background: #007bff !important; }
+.rsvp-header:focus, .rsvp-header:active { color: white !important; }
+
+/* Content area for RSVP */
+.rsvp-content {
+    padding: 10px; border: 1px solid #ddd;
+    display: none; text-align: left;
+    background: #f9f9f9; border-radius: 5px;
+}
+
+/* Blur Background */
+body.blurred {
+    overflow: hidden;
+}
+body.blurred::before {
+    content: ""; position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%; backdrop-filter: blur(8px);
+    z-index: 999;
+}
+
+/* Fade-in Animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
 }
