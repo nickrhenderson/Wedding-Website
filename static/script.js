@@ -132,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-//Function for registires
+//Function for registries
 document.querySelectorAll('.registries svg').forEach(svg => {
     svg.addEventListener('mousemove', (event) => {
         const rect = svg.getBoundingClientRect();
@@ -172,114 +172,6 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
-
-// The rest of your event listeners and logic
-const rsvpButton = document.getElementById('rsvpButton');
-const formContainer = document.getElementById('formContainer');
-const nameEntry = document.getElementById('nameEntry');
-const nameSubmit = document.getElementById('nameSubmit');
-const attendanceOptions = document.getElementById('attendanceOptions');
-const attendanceSubmit = document.getElementById('attendanceSubmit');
-const responseMessage = document.getElementById('responseMessage');
-
-rsvpButton.addEventListener('click', () => {
-    rsvpButton.classList.add('hidden');
-    formContainer.classList.remove('hidden');
-});
-
-async function handleNameSubmit(event) {
-    event.preventDefault();
-
-    const nameInput = await formatName(document.getElementById('name').value.trim());
-    const nameLabel = document.querySelector('label[for="name"]');
-    
-    // Validate name field
-    if (nameInput === '') {
-        document.getElementById('name').classList.add('error');
-        nameLabel.textContent = "NAME NOT FOUND";
-    } else {
-        document.getElementById('name').classList.remove('error');
-        nameLabel.textContent = "NAME";
-        nameEntry.classList.add('hidden');
-        attendanceOptions.classList.remove('hidden');
-        checkNameInDatabase(nameInput);
-    }
-}
-
-async function handleAttendanceSubmit(event) {
-    event.preventDefault();
-
-    const attendanceInput = document.getElementById('attendance');
-    const plusOneInput = document.getElementById('plus-one');
-    const nameInput = await formatName(document.getElementById('name').value.trim());
-
-    if (attendanceInput.value === '') {
-        attendanceInput.classList.add('error');
-    } else {
-        attendanceInput.classList.remove('error');
-        const attendanceData = {
-            attendance: attendanceInput.value,
-            'plus-one': plusOneInput.value.trim() || ''
-        };
-
-        // Update database
-        updateAttendanceInDatabase(nameInput, attendanceData);
-        displayAttendanceMessage(attendanceInput.value, nameInput);
-        formContainer.classList.add('hidden');
-        responseMessage.classList.remove('hidden');
-    }
-}
-
-function displayAttendanceMessage(status, name) {
-    const messages = {
-        'attending': `🎊 We look forward to seeing you ${name}! 🎊`,
-        'maybe': `🎊 We look forward hoping to seeing you ${name}! 🎊`,
-        'not-attending': `🎊 Sorry you can't attend ${name}, best wishes! 🎊`
-    };
-    responseMessage.textContent = messages[status] || '';
-}
-
-async function formatName(name) {
-    const dbRef = ref(database, 'users');
-    try {
-        const snapshot = await get(dbRef);
-        const usersData = snapshot.val();
-        
-        if (!usersData) return '';
-        
-        const matchedKey = Object.keys(usersData).find(key => key.toLowerCase() === name.toLowerCase());
-        return matchedKey ? String(matchedKey) : '';
-    } catch (error) {
-        return ''; // Return an empty string on error
-    }
-}
-
-async function checkNameInDatabase(name) {
-    const dbRef = ref(database, 'users');
-    try {
-        const snapshot = await get(dbRef);
-        const usersData = snapshot.val();
-        
-        if (!usersData) return false;
-        
-        return usersData.hasOwnProperty(name); // Check if the name exists in the database
-    } catch (error) {
-        return false; // Return false if an error occurs
-    }
-}
-
-function updateAttendanceInDatabase(name, data) {
-    const userRef = ref(database, 'users/' + name);
-    update(userRef, data).then(() => {
-        console.log(`Successfully updated attendance for ${name}`);
-    }).catch((error) => {
-        console.error('Error updating data:', error);
-    });
-}
-
-// Event listeners
-nameSubmit.addEventListener('click', handleNameSubmit);
-attendanceSubmit.addEventListener('click', handleAttendanceSubmit);
 
 // Function to observe the elements when they come into view
 document.addEventListener('DOMContentLoaded', () => {
