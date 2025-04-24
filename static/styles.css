@@ -613,6 +613,64 @@ button:hover {
     100% { transform: translateX(0); }
 }
 
+
+/* Modal Background */
+#rsvpModal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(8px);
+    justify-content: center; align-items: center;
+    z-index: 1000;
+}
+
+/* Modal Content */
+.modal-content {
+    background: white; padding: 20px;
+    border-radius: 10px;
+    width: 400px; max-width: 90%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    text-align: center; position: relative;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Close Button */
+.close-btn {
+    position: absolute; top: 10px; right: 15px;
+    background: none; border: none;
+    font-size: 24px; cursor: pointer;
+    color: black;
+}
+.close-btn:hover { color: red; }
+
+/* RSVP Section */
+.rsvp-section { margin-bottom: 10px; }
+.rsvp-header {
+    background: #007bff; color: white; padding: 10px;
+    border: none; cursor: pointer; width: 100%; text-align: left;
+    border-radius: 5px; position: relative;
+}
+.rsvp-header::before,
+.rsvp-header::after {
+    content: ''; position: absolute; top: 0; left: 0;
+    width: 100%; height: 100%; background: #007bff;
+    border-radius: 5px; z-index: -1; transition: all 0.3s ease;
+}
+.rsvp-header:focus::before,
+.rsvp-header:active::before,
+.rsvp-header:focus::after,
+.rsvp-header:active::after { background: #007bff !important; }
+.rsvp-header:focus, .rsvp-header:active { color: white !important; }
+
+/* Content area for RSVP */
+.rsvp-content {
+    padding: 10px; border: 1px solid #ddd;
+    display: none; text-align: left;
+    background: #f9f9f9; border-radius: 5px;
+}
+
 /* Keyframe animations for title */
 @keyframes growLetter {
     0% {
